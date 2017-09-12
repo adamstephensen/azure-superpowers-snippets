@@ -65,7 +65,7 @@ azsp001b:
     "AzureWebJobsStorage": ""
   },
   "ConnectionStrings": {
-    "SqlConnection": "Server=tcp:stevo-azsp.database.windows.net,1433;Initial Catalog=stevo-azsp-northwind;Persist Security Info=False;User ID=superPowers;Password=AzureRocks!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    "SqlConnection": "Server=tcp:[databasename].database.windows.net,1433;Initial Catalog=stevo-azsp-northwind;Persist Security Info=False;User ID=superPowers;Password=[passwords];MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
   }
 }
 
