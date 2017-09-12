@@ -1,0 +1,73 @@
+  # cson converts to json but lets us write nicer snippets
+  # main issue with snippets is here https://github.com/Microsoft/vscode/issues/15140
+  # doco for cson is here https://github.com/bevry/cson
+  # to compile the snippets
+  #     install cson
+  #     execute the following
+  #         cson2json csharp.cson>csharp.json & cson2json json.cson>json.json
+
+
+azsp001a:
+	prefix: 'azsp-fun-1a-getcustomer-funcjson'
+	description: 'description',
+	body:  ['''			
+{
+   "disabled": false,
+   "bindings": [
+     {
+       "authLevel": "function",
+       "name": "req",
+       "type": "httpTrigger",
+       "direction": "in",
+       "route": "customer/{id?}",
+       "methods": [
+         "get"
+       ]
+     },
+     {
+       "name": "$return",
+       "type": "http",
+       "direction": "out"
+     }
+   ]
+  }
+  
+	''']
+	
+
+azsp001b:
+	prefix: 'azsp-fun-1b-getcustomer-projectjson'
+	description: 'description',
+	body:  ['''			
+{
+    "frameworks": {
+        "net46": {
+            "dependencies": {
+                "Dapper": "1.50.2",
+                "System.Data.SqlClient": "4.1.0",
+                "Microsoft.WindowsAzure.ConfigurationManager": "3.2.1"
+            }
+        }
+    }
+}
+  
+	''']
+	
+
+
+azsp001b:
+	prefix: 'azsp-fun-1d-getcustomer-localsettingsjson'
+	description: 'description',
+	body:  ['''	
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": ""
+  },
+  "ConnectionStrings": {
+    "SqlConnection": "Server=tcp:stevo-azsp.database.windows.net,1433;Initial Catalog=stevo-azsp-northwind;Persist Security Info=False;User ID=superPowers;Password=AzureRocks!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  }
+}
+
+	''']
+	

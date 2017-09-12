@@ -1,0 +1,103 @@
+# cson converts to json but lets us write nicer snippets
+# main issue with snippets is here https://github.com/Microsoft/vscode/issues/15140
+# doco for cson is here https://github.com/bevry/cson
+
+
+azsp001a:
+	prefix: 'azsp-fun-1c-getcustomer-customercs'
+	description: 'description',
+	body:  ['''			
+
+public class Customer
+{
+   public string CustomerId { get; set; }
+   public string CompanyName { get; set; }
+   public string Address { get; set; }
+   public string City { get; set; }
+   public string ContactName { get; set; }
+   public string ContactTitle { get; set; }
+   public string Country { get; set; }
+   public string Fax { get; set; }
+   public string Phone { get; set; }
+   public string PostalCode { get; set; }
+   public string Region { get; set; }
+
+   public static Func<dynamic, Customer> Project
+   {
+       get
+       {
+           return data =>
+           {
+               return new Customer
+               {
+                   CompanyName = data?.CompanyName,
+                   Address = data?.Address,
+                   City = data?.City,
+                   ContactName = data?.ContactName,
+                   ContactTitle = data?.ContactTitle,
+                   Country = data?.Country,
+                   Fax = data?.Fax,
+                   Phone = data?.Phone,
+                   PostalCode = data?.PostalCode,
+                   Region = data?.Region
+               };
+           };
+       }
+   }
+}
+
+  
+	''']
+	
+
+azsp001b:
+	prefix: 'azsp-fun-1b-getcustomer-projectjson'
+	description: 'description',
+	body:  ['''			
+{
+    "frameworks": {
+        "net46": {
+            "dependencies": {
+                "Dapper": "1.50.2",
+                "System.Data.SqlClient": "4.1.0",
+                "Microsoft.WindowsAzure.ConfigurationManager": "3.2.1"
+            }
+        }
+    }
+}
+  
+	''']
+	
+
+azsp001e:
+	prefix: 'azsp-fun-1e-getcustomer-runcsx'
+	body:['''
+#load "../shared/model/customer.csx"
+
+using System.Net;
+using System.Configuration;
+using System.Data.SqlClient;
+using Dapper;
+
+public static dynamic Run(HttpRequestMessage req, string id,
+TraceWriter log)
+{
+    var connection = ConfigurationManager.ConnectionStrings["SqlConnection"].ConnectionString;
+    log.Info("C# HTTP trigger function processed a request.");
+
+    using (var db = new SqlConnection(connection))
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            List<Customer> customers = db.Query<Customer>("SELECT * FROM [dbo].[Customers]").ToList();
+            return customers;
+        }
+        else
+        {
+            Customer customer = db.Query<Customer>("SELECT * FROM [dbo].[Customers] WHERE CustomerId = @Id", new { Id = id }).FirstOrDefault();
+            return customer;
+        }
+    }
+}
+
+''']	

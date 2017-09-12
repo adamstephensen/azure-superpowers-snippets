@@ -1,26 +1,22 @@
 {
-	/*
-	// Place your snippets for C# here. Each snippet is defined under a snippet name and has a prefix, body and 
-	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
-	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
-	// same ids are connected.
-	// Example:
-	"Print to console": {
-		"prefix": "log",
-		"body": [
-			"console.log('$1');",
-			"$2"
-		],
-		"description": "Log output to console"
-	}
-*/
-	"Print to console": {
-		"prefix": "log",
-		"body": [
-			"console.log('$1');",
-			"$2"
-		],
-		"description": "Log output to console"
-	}
-
+  "azsp001a": {
+    "prefix": "azsp-fun-1c-getcustomer-customercs",
+    "description": "description",
+    "body": [
+      "\npublic class Customer\n{\n   public string CustomerId { get; set; }\n   public string CompanyName { get; set; }\n   public string Address { get; set; }\n   public string City { get; set; }\n   public string ContactName { get; set; }\n   public string ContactTitle { get; set; }\n   public string Country { get; set; }\n   public string Fax { get; set; }\n   public string Phone { get; set; }\n   public string PostalCode { get; set; }\n   public string Region { get; set; }\n\n   public static Func<dynamic, Customer> Project\n   {\n       get\n       {\n           return data =>\n           {\n               return new Customer\n               {\n                   CompanyName = data?.CompanyName,\n                   Address = data?.Address,\n                   City = data?.City,\n                   ContactName = data?.ContactName,\n                   ContactTitle = data?.ContactTitle,\n                   Country = data?.Country,\n                   Fax = data?.Fax,\n                   Phone = data?.Phone,\n                   PostalCode = data?.PostalCode,\n                   Region = data?.Region\n               };\n           };\n       }\n   }\n}\n\n  "
+    ]
+  },
+  "azsp001b": {
+    "prefix": "azsp-fun-1b-getcustomer-projectjson",
+    "description": "description",
+    "body": [
+      "{\n    \"frameworks\": {\n        \"net46\": {\n            \"dependencies\": {\n                \"Dapper\": \"1.50.2\",\n                \"System.Data.SqlClient\": \"4.1.0\",\n                \"Microsoft.WindowsAzure.ConfigurationManager\": \"3.2.1\"\n            }\n        }\n    }\n}\n  "
+    ]
+  },
+  "azsp001e": {
+    "prefix": "azsp-fun-1e-getcustomer-runcsx",
+    "body": [
+      "#load \"../shared/model/customer.csx\"\n\nusing System.Net;\nusing System.Configuration;\nusing System.Data.SqlClient;\nusing Dapper;\n\npublic static dynamic Run(HttpRequestMessage req, string id,\nTraceWriter log)\n{\n    var connection = ConfigurationManager.ConnectionStrings[\"SqlConnection\"].ConnectionString;\n    log.Info(\"C# HTTP trigger function processed a request.\");\n\n    using (var db = new SqlConnection(connection))\n    {\n        if (string.IsNullOrEmpty(id))\n        {\n            List<Customer> customers = db.Query<Customer>(\"SELECT * FROM [dbo].[Customers]\").ToList();\n            return customers;\n        }\n        else\n        {\n            Customer customer = db.Query<Customer>(\"SELECT * FROM [dbo].[Customers] WHERE CustomerId = @Id\", new { Id = id }).FirstOrDefault();\n            return customer;\n        }\n    }\n}\n"
+    ]
+  }
 }
