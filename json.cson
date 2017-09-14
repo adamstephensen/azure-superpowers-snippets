@@ -11,7 +11,7 @@ snippetname:
 	prefix: 'snippet-name'
 	body:  ['''	
 	''']
-    
+
 redisconnectoinstring:
 	prefix: 'redis-connection-string'
 	body: ['''
@@ -185,3 +185,76 @@ azsp003updatefunction:
   ]
 }	
 	''']
+
+
+azsp003persistcustomerprojectjson:
+	prefix: 'azsp-fun-3-persistCustomer-projectjson'
+	body:  ['''
+{
+    "frameworks": {
+      "net46": {
+        "dependencies": {
+          "Dapper": "1.50.2",
+          "System.Data.SqlClient": "4.1.0",
+          "Microsoft.WindowsAzure.ConfigurationManager": "3.2.1"
+        }
+      }
+    }
+  }    
+	''']
+
+azsp003persistcustomerfunctionjson:
+	prefix: 'azsp-fun-3-persistCustomer-functionjson'
+	body:  ['''
+{
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "customer",
+      "type": "serviceBusTrigger",
+      "direction": "in",
+      "topicName": "updateCustomer",
+      "subscriptionName": "persistCustomer",
+      "connection": "SB",
+      "accessRights":"listen"
+    }
+  ]
+}    
+	''']
+
+azsp003cachecustomerprojectjson:
+	prefix: 'azsp-fun-3-cacheCustomer-projectjson'
+	body:  ['''
+{
+    "frameworks": {
+      "net46": {
+        "dependencies": {
+          "ServiceStack.Common": "4.5.12",
+          "ServiceStack.Interfaces": "4.5.12",
+          "ServiceStack.Redis": "4.5.12",
+          "ServiceStack.Text": "4.5.12"
+        }
+      }
+    }
+  }    
+	''']
+
+azsp003cachecustomerfunction:
+	prefix: 'azsp-fun-3-cacheCustomer-functionjson'
+	body:  ['''
+{
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "customer",
+      "type": "serviceBusTrigger",
+      "direction": "in",
+      "topicName": "updateCustomer",
+      "subscriptionName": "cacheCustomer",
+      "connection": "SB",
+      "accessRights": "listen"
+    }
+  ]
+}    
+	''']
+

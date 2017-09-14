@@ -161,13 +161,52 @@ public static async Task<Customer> Run(HttpRequestMessage req, TraceWriter log,
     log.Info($"updateCustomer. Customer: {data.Id}");
     topicQueue.AddAsync(data);
     return data;
-}
-    
+}    
 	''']
 
 
-snippetname:
-	prefix: 'snippet-name'
+azsp003persistcustomerruncsx:
+	prefix: 'azsp-fun-3-updateCustomer-runcsx'
 	body:  ['''	
+#load "../shared/model/customer.csx"
+
+using System.Net;
+using Dapper;
+using System.Data.SqlClient;
+using System.Configuration;
+
+public static void Run(Customer customer, TraceWriter log)
+{
+    var cnnString  = ConfigurationManager.ConnectionStrings["SqlConnection"].ConnectionString;
+    using(var db = new SqlConnection(cnnString))
+    {
+        string command = "";
+        command = @"UPDATE [dbo].[Customers] SET CompanyName = @CompanyName WHERE CustomerId = @Id";
+
+        var result = db.Execute(command,customer);
+        log.Info($"persistCustomer: updated {customer.CompanyName}");
+    }
+}
 	''']
     
+azsp003cachecustomerruncsx:
+	prefix: 'azsp-fun-3-cacheCustomer-runcsx'
+	body:  ['''	
+#load "../shared/model/customer.csx"
+
+using System;
+using System.Configuration;
+using System.Threading.Tasks;
+using ServiceStack.Redis;
+using ServiceStack.Text;
+
+public static void Run(Customer customer, TraceWriter log)
+{
+    log.Info($"cacheCustomer customer:{customer}");
+    var redisString  = ConfigurationManager.ConnectionStrings["MyRedis"].ConnectionString;
+    var redisManager = new RedisManagerPool(redisString);
+    var redis = redisManager.GetClient();
+    var redisCustomer = redis.As<Customer>();
+    redisCustomer.Store(customer);
+}    
+	''']    

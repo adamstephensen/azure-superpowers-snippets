@@ -34,7 +34,19 @@
   "azsp003updateruncsx": {
     "prefix": "azsp-fun-3-updateCustomer-runcsx",
     "body": [
-      "#load \"../shared/model/customer.csx\"\nusing System.Net;\n\npublic static async Task<Customer> Run(HttpRequestMessage req, TraceWriter log, \n    IAsyncCollector<Customer> topicQueue)\n{    \n    Customer data = await req.Content.ReadAsAsync<Customer>();\n    log.Info($\"updateCustomer. Customer: {data.Id}\");\n    topicQueue.AddAsync(data);\n    return data;\n}\n    "
+      "#load \"../shared/model/customer.csx\"\nusing System.Net;\n\npublic static async Task<Customer> Run(HttpRequestMessage req, TraceWriter log, \n    IAsyncCollector<Customer> topicQueue)\n{    \n    Customer data = await req.Content.ReadAsAsync<Customer>();\n    log.Info($\"updateCustomer. Customer: {data.Id}\");\n    topicQueue.AddAsync(data);\n    return data;\n}    "
+    ]
+  },
+  "azsp003persistcustomerruncsx": {
+    "prefix": "azsp-fun-3-updateCustomer-runcsx",
+    "body": [
+      "#load \"../shared/model/customer.csx\"\n\nusing System.Net;\nusing Dapper;\nusing System.Data.SqlClient;\nusing System.Configuration;\n\npublic static void Run(Customer customer, TraceWriter log)\n{\n    var cnnString  = ConfigurationManager.ConnectionStrings[\"SqlConnection\"].ConnectionString;\n    using(var db = new SqlConnection(cnnString))\n    {\n        string command = \"\";\n        command = @\"UPDATE [dbo].[Customers] SET CompanyName = @CompanyName WHERE CustomerId = @Id\";\n\n        var result = db.Execute(command,customer);\n        log.Info($\"persistCustomer: updated {customer.CompanyName}\");\n    }\n}"
+    ]
+  },
+  "azsp003cachecustomerruncsx": {
+    "prefix": "azsp-fun-3-cacheCustomer-runcsx",
+    "body": [
+      "#load \"../shared/model/customer.csx\"\n\nusing System;\nusing System.Configuration;\nusing System.Threading.Tasks;\nusing ServiceStack.Redis;\nusing ServiceStack.Text;\n\npublic static void Run(Customer customer, TraceWriter log)\n{\n    log.Info($\"cacheCustomer customer:{customer}\");\n    var redisString  = ConfigurationManager.ConnectionStrings[\"MyRedis\"].ConnectionString;\n    var redisManager = new RedisManagerPool(redisString);\n    var redis = redisManager.GetClient();\n    var redisCustomer = redis.As<Customer>();\n    redisCustomer.Store(customer);\n}    "
     ]
   }
 }

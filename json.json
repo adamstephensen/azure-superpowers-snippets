@@ -54,5 +54,29 @@
     "body": [
       "{\n  \"disabled\": false,\n  \"bindings\": [\n    {\n      \"authLevel\": \"function\",\n      \"name\": \"req\",\n      \"type\": \"httpTrigger\",\n      \"direction\": \"in\",\n      \"route\": \"customer\",\n      \"methods\": [\n        \"post\"\n      ]\n    },\n    {\n      \"type\": \"serviceBus\",\n      \"name\": \"topicQueue\",\n      \"topicName\": \"updateCustomer\",\n      \"connection\": \"SB\",\n      \"accessRights\": \"Send\",\n      \"direction\": \"out\"\n    }\n  ]\n}\t"
     ]
+  },
+  "azsp003persistcustomerprojectjson": {
+    "prefix": "azsp-fun-3-persistCustomer-projectjson",
+    "body": [
+      "{\n    \"frameworks\": {\n      \"net46\": {\n        \"dependencies\": {\n          \"Dapper\": \"1.50.2\",\n          \"System.Data.SqlClient\": \"4.1.0\",\n          \"Microsoft.WindowsAzure.ConfigurationManager\": \"3.2.1\"\n        }\n      }\n    }\n  }    "
+    ]
+  },
+  "azsp003persistcustomerfunctionjson": {
+    "prefix": "azsp-fun-3-persistCustomer-functionjson",
+    "body": [
+      "{\n  \"disabled\": false,\n  \"bindings\": [\n    {\n      \"name\": \"customer\",\n      \"type\": \"serviceBusTrigger\",\n      \"direction\": \"in\",\n      \"topicName\": \"updateCustomer\",\n      \"subscriptionName\": \"persistCustomer\",\n      \"connection\": \"SB\",\n      \"accessRights\":\"listen\"\n    }\n  ]\n}    "
+    ]
+  },
+  "azsp003cachecustomerprojectjson": {
+    "prefix": "azsp-fun-3-cacheCustomer-projectjson",
+    "body": [
+      "{\n    \"frameworks\": {\n      \"net46\": {\n        \"dependencies\": {\n          \"ServiceStack.Common\": \"4.5.12\",\n          \"ServiceStack.Interfaces\": \"4.5.12\",\n          \"ServiceStack.Redis\": \"4.5.12\",\n          \"ServiceStack.Text\": \"4.5.12\"\n        }\n      }\n    }\n  }    "
+    ]
+  },
+  "azsp003cachecustomerfunction": {
+    "prefix": "azsp-fun-3-cacheCustomer-functionjson",
+    "body": [
+      "{\n  \"disabled\": false,\n  \"bindings\": [\n    {\n      \"name\": \"customer\",\n      \"type\": \"serviceBusTrigger\",\n      \"direction\": \"in\",\n      \"topicName\": \"updateCustomer\",\n      \"subscriptionName\": \"cacheCustomer\",\n      \"connection\": \"SB\",\n      \"accessRights\": \"listen\"\n    }\n  ]\n}    "
+    ]
   }
 }
