@@ -1,5 +1,17 @@
 {
+  "snippetname": {
+    "prefix": "snippet-name",
+    "body": [
+      "\t"
+    ]
+  },
   "redisconnectoinstring": {
+    "prefix": "redis-connection-string",
+    "body": [
+      "\"MyRedis\":\"redis://[password]@[redisinstancename].redis.cache.windows.net:6380?ssl=true&db=1\""
+    ]
+  },
+  "AzureWebJobsStorage": {
     "prefix": "azure-web-job-storage-settings",
     "body": [
       "\"AzureWebJobsStorage\": \"UseDevelopmentStorage=true\""
@@ -19,10 +31,28 @@
       "{\n  \"IsEncrypted\": false,\n  \"Values\": {\n    \"AzureWebJobsStorage\": \"\"\n  },\n  \"ConnectionStrings\": {\n    \"SqlConnection\": \"Server=tcp:[databasename].database.windows.net,1433;Initial Catalog=stevo-azsp-northwind;Persist Security Info=False;User ID=superPowers;Password=[passwords];MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;\"\n  }\n}\n"
     ]
   },
-  "azsp002a": {
-    "prefix": "azsp-fun-2a-syncCustomers-projectjson",
+  "azsp002projectjson": {
+    "prefix": "azsp-fun-2-syncCustomers-projectjson",
     "body": [
       "{\n  \"frameworks\": {\n      \"net46\": {\n          \"dependencies\": {\n              \"Dapper\": \"1.50.2\",\n              \"System.Data.SqlClient\": \"4.1.0\",\n              \"Microsoft.WindowsAzure.ConfigurationManager\": \"3.2.1\",\n              \"ServiceStack.Common\": \"4.5.12\",\n              \"ServiceStack.Interfaces\": \"4.5.12\",\n              \"ServiceStack.Redis\": \"4.5.12\",\n              \"ServiceStack.Text\": \"4.5.12\"\n          }\n      }\n  }\n}"
+    ]
+  },
+  "azsp002functionjson": {
+    "prefix": "azsp-fun-2-syncCustomers-functionjson",
+    "body": [
+      "{\n  \"disabled\": false,\n  \"bindings\": [\n    {\n      \"name\": \"myTimer\",\n      \"type\": \"timerTrigger\",\n      \"direction\": \"in\",\n      \"schedule\": \"0 */5 * * * *\"\n    }\n  ]\n}"
+    ]
+  },
+  "azsp002localsettings": {
+    "prefix": "azsp-fun-2-syncCustomers-localsettingsjson",
+    "body": [
+      "  {\n \"IsEncrypted\": false,\n \"Values\": {\n     \"AzureWebJobsStorage\": \"UseDevelopmentStorage=true\",\n },\n \"ConnectionStrings\": {\n    \"SqlConnection\": \"[SQL Connection String]\",\n    \"MyRedis\": \"redis://[password]@[cache-name].redis.cache.windows.net:6380?ssl=true&db=1\"      \n }\n}"
+    ]
+  },
+  "azsp003updatefunction": {
+    "prefix": "azsp-fun-3-updateCustomer-functionjson",
+    "body": [
+      "{\n  \"disabled\": false,\n  \"bindings\": [\n    {\n      \"authLevel\": \"function\",\n      \"name\": \"req\",\n      \"type\": \"httpTrigger\",\n      \"direction\": \"in\",\n      \"route\": \"customer\",\n      \"methods\": [\n        \"post\"\n      ]\n    },\n    {\n      \"type\": \"serviceBus\",\n      \"name\": \"topicQueue\",\n      \"topicName\": \"updateCustomer\",\n      \"connection\": \"SB\",\n      \"accessRights\": \"Send\",\n      \"direction\": \"out\"\n    }\n  ]\n}\t"
     ]
   }
 }

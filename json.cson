@@ -7,6 +7,11 @@
   #         cson2json csharp.cson>csharp.json & cson2json json.cson>json.json
 
 
+snippetname:
+	prefix: 'snippet-name'
+	body:  ['''	
+	''']
+    
 redisconnectoinstring:
 	prefix: 'redis-connection-string'
 	body: ['''
@@ -14,11 +19,15 @@ redisconnectoinstring:
 ''']
 
 
-redisconnectoinstring:
+AzureWebJobsStorage:
 	prefix: 'azure-web-job-storage-settings'
 	body: ['''
 "AzureWebJobsStorage": "UseDevelopmentStorage=true"
 ''']
+
+# #########################
+#      DEMO #1 - GET CUSTOMER DIRECT FROM DATABASE
+# #########################
 
 
 azsp001a:
@@ -86,8 +95,13 @@ azsp001b:
 	''']
 	
 
-azsp002a:
-	prefix: 'azsp-fun-2a-syncCustomers-projectjson'
+# #########################
+#      DEMO #2 - TIMER TRIGGER TO UPDATE REDIS CACHE
+# #########################
+
+
+azsp002projectjson:
+	prefix: 'azsp-fun-2-syncCustomers-projectjson'
 	body: ['''
   {
     "frameworks": {
@@ -105,3 +119,69 @@ azsp002a:
     }
 }
   ''']
+
+  
+azsp002functionjson:
+	prefix: 'azsp-fun-2-syncCustomers-functionjson'
+	body: ['''
+{
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "myTimer",
+      "type": "timerTrigger",
+      "direction": "in",
+      "schedule": "0 */5 * * * *"
+    }
+  ]
+}
+    ''']
+
+
+azsp002localsettings:
+	prefix: 'azsp-fun-2-syncCustomers-localsettingsjson'
+	body: ['''
+    {
+   "IsEncrypted": false,
+   "Values": {
+       "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+   },
+   "ConnectionStrings": {
+      "SqlConnection": "[SQL Connection String]",
+      "MyRedis": "redis://[password]@[cache-name].redis.cache.windows.net:6380?ssl=true&db=1"      
+   }
+  }
+    ''']
+  
+  
+# #########################
+#      DEMO #3 - USE A SERVICE BUS FOR UPDATES
+# #########################
+
+azsp003updatefunction:
+	prefix: 'azsp-fun-3-updateCustomer-functionjson'
+	body:  ['''
+{
+  "disabled": false,
+  "bindings": [
+    {
+      "authLevel": "function",
+      "name": "req",
+      "type": "httpTrigger",
+      "direction": "in",
+      "route": "customer",
+      "methods": [
+        "post"
+      ]
+    },
+    {
+      "type": "serviceBus",
+      "name": "topicQueue",
+      "topicName": "updateCustomer",
+      "connection": "SB",
+      "accessRights": "Send",
+      "direction": "out"
+    }
+  ]
+}	
+	''']

@@ -1,4 +1,10 @@
 {
+  "snippetname": {
+    "prefix": "snippet-name",
+    "body": [
+      "\t"
+    ]
+  },
   "azsp001a": {
     "prefix": "azsp-fun-1c-getcustomer-customercs",
     "description": "description",
@@ -20,9 +26,15 @@
     ]
   },
   "azsp002b": {
-    "prefix": "azsp-fun-2b-syncCustomers-runcsx",
+    "prefix": "azsp-fun-2-syncCustomers-runcsx",
     "body": [
       "#load \"../shared/model/customer.csx\"\nusing System.Net;\nusing Dapper;\nusing System.Data.SqlClient;\nusing System.Configuration;\nusing ServiceStack.Redis;\nusing ServiceStack.Text;\nusing System.Configuration;\n\npublic static void Run(TimerInfo myTimer, TraceWriter log)\n{ \n    log.Info($\"C# Timer trigger function executed at: {DateTime.Now}\");\n    var cnnString  = ConfigurationManager.ConnectionStrings[\"SqlConnection\"].ConnectionString;\n    var redisString  = ConfigurationManager.ConnectionStrings[\"MyRedis\"].ConnectionString;\n\n    var redisManager = new RedisManagerPool(redisString);\n    var redis = redisManager.GetClient();\n    var redisCustomer = redis.As<Customer>();\n\n    using(var db = new SqlConnection(cnnString))\n    {\n       var list = db.Query<Customer>(\"select * from [dbo].[Customers]\").ToList();\n       // foreach (var item in list)\n       // {\n       //     redisCustomer.Store(item);\n       // }\n       redisCustomer.StoreAll(list);\n    }\n}\n"
+    ]
+  },
+  "azsp003updateruncsx": {
+    "prefix": "azsp-fun-3-updateCustomer-runcsx",
+    "body": [
+      "#load \"../shared/model/customer.csx\"\nusing System.Net;\n\npublic static async Task<Customer> Run(HttpRequestMessage req, TraceWriter log, \n    IAsyncCollector<Customer> topicQueue)\n{    \n    Customer data = await req.Content.ReadAsAsync<Customer>();\n    log.Info($\"updateCustomer. Customer: {data.Id}\");\n    topicQueue.AddAsync(data);\n    return data;\n}\n    "
     ]
   }
 }

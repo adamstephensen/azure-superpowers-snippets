@@ -2,6 +2,10 @@
 # main issue with snippets is here https://github.com/Microsoft/vscode/issues/15140
 # doco for cson is here https://github.com/bevry/cson
 
+snippetname:
+	prefix: 'snippet-name'
+	body:  ['''	
+	''']
 
 azsp001a:
 	prefix: 'azsp-fun-1c-getcustomer-customercs'
@@ -105,7 +109,7 @@ TraceWriter log)
 
 
 azsp002b:
-	prefix: 'azsp-fun-2b-syncCustomers-runcsx'
+	prefix: 'azsp-fun-2-syncCustomers-runcsx'
 	body: ['''
 #load "../shared/model/customer.csx"
 using System.Net;
@@ -138,3 +142,32 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 }
 
 ''']
+
+
+# #########################
+#      DEMO #3 - USE A SERVICE BUS FOR UPDATES
+# #########################
+
+azsp003updateruncsx:
+	prefix: 'azsp-fun-3-updateCustomer-runcsx'
+	body:  ['''	
+#load "../shared/model/customer.csx"
+using System.Net;
+
+public static async Task<Customer> Run(HttpRequestMessage req, TraceWriter log, 
+    IAsyncCollector<Customer> topicQueue)
+{    
+    Customer data = await req.Content.ReadAsAsync<Customer>();
+    log.Info($"updateCustomer. Customer: {data.Id}");
+    topicQueue.AddAsync(data);
+    return data;
+}
+    
+	''']
+
+
+snippetname:
+	prefix: 'snippet-name'
+	body:  ['''	
+	''']
+    
