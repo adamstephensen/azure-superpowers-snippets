@@ -17,14 +17,21 @@
       "\"AzureWebJobsStorage\": \"UseDevelopmentStorage=true\""
     ]
   },
-  "azsp001a": {
-    "prefix": "azsp-fun-1a-getcustomer-funcjson",
+  "azsp001getcustomerfunctionjson": {
+    "prefix": "azsp-fun-1-getcustomer-funcjson",
     "description": "description",
     "body": [
       "{\n   \"disabled\": false,\n   \"bindings\": [\n     {\n       \"authLevel\": \"function\",\n       \"name\": \"req\",\n       \"type\": \"httpTrigger\",\n       \"direction\": \"in\",\n       \"route\": \"customer/{id?}\",\n       \"methods\": [\n         \"get\"\n       ]\n     },\n     {\n       \"name\": \"$return\",\n       \"type\": \"http\",\n       \"direction\": \"out\"\n     }\n   ]\n  }\n  "
     ]
   },
-  "azsp001b": {
+  "azsp001getcustomerprojectjson": {
+    "prefix": "azsp-fun-1-getcustomer-projectjson",
+    "description": "description",
+    "body": [
+      "{\n    \"frameworks\": {\n        \"net46\": {\n            \"dependencies\": {\n                \"Dapper\": \"1.50.2\",\n                \"System.Data.SqlClient\": \"4.1.0\",\n                \"Microsoft.WindowsAzure.ConfigurationManager\": \"3.2.1\"\n            }\n        }\n    }\n}\n  "
+    ]
+  },
+  "azsp001getcustomerlocalsettingsjson": {
     "prefix": "azsp-fun-1d-getcustomer-localsettingsjson",
     "description": "description",
     "body": [

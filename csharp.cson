@@ -7,7 +7,7 @@ snippetname:
 	body:  ['''	
 	''']
 
-azsp001a:
+azsp001getcustomercustomercs:
 	prefix: 'azsp-fun-1c-getcustomer-customercs'
 	description: 'description',
 	body:  ['''			
@@ -54,7 +54,7 @@ public class Customer
 	''']
 	
 
-azsp001b:
+azsp001getcustomerprojectjson:
 	prefix: 'azsp-fun-1b-getcustomer-projectjson'
 	description: 'description',
 	body:  ['''			
@@ -73,7 +73,7 @@ azsp001b:
 	''']
 	
 
-azsp001e:
+azsp001getcustomerruncsx:
 	prefix: 'azsp-fun-1e-getcustomer-runcsx'
 	body:['''
 #load "../shared/model/customer.csx"
@@ -108,7 +108,7 @@ TraceWriter log)
 
 
 
-azsp002b:
+azsp002sycncustomerruncsx:
 	prefix: 'azsp-fun-2-syncCustomers-runcsx'
 	body: ['''
 #load "../shared/model/customer.csx"
@@ -148,7 +148,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 #      DEMO #3 - USE A SERVICE BUS FOR UPDATES
 # #########################
 
-azsp003updateruncsx:
+azsp003updatecustomerruncsx:
 	prefix: 'azsp-fun-3-updateCustomer-runcsx'
 	body:  ['''	
 #load "../shared/model/customer.csx"
@@ -166,7 +166,7 @@ public static async Task<Customer> Run(HttpRequestMessage req, TraceWriter log,
 
 
 azsp003persistcustomerruncsx:
-	prefix: 'azsp-fun-3-updateCustomer-runcsx'
+	prefix: 'azsp-fun-3-persistCustomer-runcsx'
 	body:  ['''	
 #load "../shared/model/customer.csx"
 

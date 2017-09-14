@@ -30,8 +30,8 @@ AzureWebJobsStorage:
 # #########################
 
 
-azsp001a:
-	prefix: 'azsp-fun-1a-getcustomer-funcjson'
+azsp001getcustomerfunctionjson:
+	prefix: 'azsp-fun-1-getcustomer-funcjson'
 	description: 'description',
 	body:  ['''			
 {
@@ -58,8 +58,8 @@ azsp001a:
 	''']
 	
 
-azsp001b:
-	prefix: 'azsp-fun-1b-getcustomer-projectjson'
+azsp001getcustomerprojectjson:
+	prefix: 'azsp-fun-1-getcustomer-projectjson'
 	description: 'description',
 	body:  ['''			
 {
@@ -78,7 +78,7 @@ azsp001b:
 	
 
 
-azsp001b:
+azsp001getcustomerlocalsettingsjson:
 	prefix: 'azsp-fun-1d-getcustomer-localsettingsjson'
 	description: 'description',
 	body:  ['''	

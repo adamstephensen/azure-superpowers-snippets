@@ -5,40 +5,40 @@
       "\t"
     ]
   },
-  "azsp001a": {
+  "azsp001getcustomercustomercs": {
     "prefix": "azsp-fun-1c-getcustomer-customercs",
     "description": "description",
     "body": [
       "\npublic class Customer\n{\n   public string CustomerId { get; set; }\n   public string CompanyName { get; set; }\n   public string Address { get; set; }\n   public string City { get; set; }\n   public string ContactName { get; set; }\n   public string ContactTitle { get; set; }\n   public string Country { get; set; }\n   public string Fax { get; set; }\n   public string Phone { get; set; }\n   public string PostalCode { get; set; }\n   public string Region { get; set; }\n\n   public static Func<dynamic, Customer> Project\n   {\n       get\n       {\n           return data =>\n           {\n               return new Customer\n               {\n                   CompanyName = data?.CompanyName,\n                   Address = data?.Address,\n                   City = data?.City,\n                   ContactName = data?.ContactName,\n                   ContactTitle = data?.ContactTitle,\n                   Country = data?.Country,\n                   Fax = data?.Fax,\n                   Phone = data?.Phone,\n                   PostalCode = data?.PostalCode,\n                   Region = data?.Region\n               };\n           };\n       }\n   }\n}\n\n  "
     ]
   },
-  "azsp001b": {
+  "azsp001getcustomerprojectjson": {
     "prefix": "azsp-fun-1b-getcustomer-projectjson",
     "description": "description",
     "body": [
       "{\n    \"frameworks\": {\n        \"net46\": {\n            \"dependencies\": {\n                \"Dapper\": \"1.50.2\",\n                \"System.Data.SqlClient\": \"4.1.0\",\n                \"Microsoft.WindowsAzure.ConfigurationManager\": \"3.2.1\"\n            }\n        }\n    }\n}\n  "
     ]
   },
-  "azsp001e": {
+  "azsp001getcustomerruncsx": {
     "prefix": "azsp-fun-1e-getcustomer-runcsx",
     "body": [
       "#load \"../shared/model/customer.csx\"\n\nusing System.Net;\nusing System.Configuration;\nusing System.Data.SqlClient;\nusing Dapper;\n\npublic static dynamic Run(HttpRequestMessage req, string id,\nTraceWriter log)\n{\n    var connection = ConfigurationManager.ConnectionStrings[\"SqlConnection\"].ConnectionString;\n    log.Info(\"C# HTTP trigger function processed a request.\");\n\n    using (var db = new SqlConnection(connection))\n    {\n        if (string.IsNullOrEmpty(id))\n        {\n            List<Customer> customers = db.Query<Customer>(\"SELECT * FROM [dbo].[Customers]\").ToList();\n            return customers;\n        }\n        else\n        {\n            Customer customer = db.Query<Customer>(\"SELECT * FROM [dbo].[Customers] WHERE CustomerId = @Id\", new { Id = id }).FirstOrDefault();\n            return customer;\n        }\n    }\n}\n"
     ]
   },
-  "azsp002b": {
+  "azsp002sycncustomerruncsx": {
     "prefix": "azsp-fun-2-syncCustomers-runcsx",
     "body": [
       "#load \"../shared/model/customer.csx\"\nusing System.Net;\nusing Dapper;\nusing System.Data.SqlClient;\nusing System.Configuration;\nusing ServiceStack.Redis;\nusing ServiceStack.Text;\nusing System.Configuration;\n\npublic static void Run(TimerInfo myTimer, TraceWriter log)\n{ \n    log.Info($\"C# Timer trigger function executed at: {DateTime.Now}\");\n    var cnnString  = ConfigurationManager.ConnectionStrings[\"SqlConnection\"].ConnectionString;\n    var redisString  = ConfigurationManager.ConnectionStrings[\"MyRedis\"].ConnectionString;\n\n    var redisManager = new RedisManagerPool(redisString);\n    var redis = redisManager.GetClient();\n    var redisCustomer = redis.As<Customer>();\n\n    using(var db = new SqlConnection(cnnString))\n    {\n       var list = db.Query<Customer>(\"select * from [dbo].[Customers]\").ToList();\n       // foreach (var item in list)\n       // {\n       //     redisCustomer.Store(item);\n       // }\n       redisCustomer.StoreAll(list);\n    }\n}\n"
     ]
   },
-  "azsp003updateruncsx": {
+  "azsp003updatecustomerruncsx": {
     "prefix": "azsp-fun-3-updateCustomer-runcsx",
     "body": [
       "#load \"../shared/model/customer.csx\"\nusing System.Net;\n\npublic static async Task<Customer> Run(HttpRequestMessage req, TraceWriter log, \n    IAsyncCollector<Customer> topicQueue)\n{    \n    Customer data = await req.Content.ReadAsAsync<Customer>();\n    log.Info($\"updateCustomer. Customer: {data.Id}\");\n    topicQueue.AddAsync(data);\n    return data;\n}    "
     ]
   },
   "azsp003persistcustomerruncsx": {
-    "prefix": "azsp-fun-3-updateCustomer-runcsx",
+    "prefix": "azsp-fun-3-persistCustomer-runcsx",
     "body": [
       "#load \"../shared/model/customer.csx\"\n\nusing System.Net;\nusing Dapper;\nusing System.Data.SqlClient;\nusing System.Configuration;\n\npublic static void Run(Customer customer, TraceWriter log)\n{\n    var cnnString  = ConfigurationManager.ConnectionStrings[\"SqlConnection\"].ConnectionString;\n    using(var db = new SqlConnection(cnnString))\n    {\n        string command = \"\";\n        command = @\"UPDATE [dbo].[Customers] SET CompanyName = @CompanyName WHERE CustomerId = @Id\";\n\n        var result = db.Execute(command,customer);\n        log.Info($\"persistCustomer: updated {customer.CompanyName}\");\n    }\n}"
     ]
