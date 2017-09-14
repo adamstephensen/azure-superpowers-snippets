@@ -1,4 +1,10 @@
 {
+  "redisconnectoinstring": {
+    "prefix": "azure-web-job-storage-settings",
+    "body": [
+      "\"AzureWebJobsStorage\": \"UseDevelopmentStorage=true\""
+    ]
+  },
   "azsp001a": {
     "prefix": "azsp-fun-1a-getcustomer-funcjson",
     "description": "description",
@@ -10,7 +16,13 @@
     "prefix": "azsp-fun-1d-getcustomer-localsettingsjson",
     "description": "description",
     "body": [
-      "{\n  \"IsEncrypted\": false,\n  \"Values\": {\n    \"AzureWebJobsStorage\": \"\"\n  },\n  \"ConnectionStrings\": {\n    \"SqlConnection\": \"Server=tcp:stevo-azsp.database.windows.net,1433;Initial Catalog=stevo-azsp-northwind;Persist Security Info=False;User ID=superPowers;Password=AzureRocks!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;\"\n  }\n}\n"
+      "{\n  \"IsEncrypted\": false,\n  \"Values\": {\n    \"AzureWebJobsStorage\": \"\"\n  },\n  \"ConnectionStrings\": {\n    \"SqlConnection\": \"Server=tcp:[databasename].database.windows.net,1433;Initial Catalog=stevo-azsp-northwind;Persist Security Info=False;User ID=superPowers;Password=[passwords];MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;\"\n  }\n}\n"
+    ]
+  },
+  "azsp002a": {
+    "prefix": "azsp-fun-2a-syncCustomers-projectjson",
+    "body": [
+      "{\n  \"frameworks\": {\n      \"net46\": {\n          \"dependencies\": {\n              \"Dapper\": \"1.50.2\",\n              \"System.Data.SqlClient\": \"4.1.0\",\n              \"Microsoft.WindowsAzure.ConfigurationManager\": \"3.2.1\",\n              \"ServiceStack.Common\": \"4.5.12\",\n              \"ServiceStack.Interfaces\": \"4.5.12\",\n              \"ServiceStack.Redis\": \"4.5.12\",\n              \"ServiceStack.Text\": \"4.5.12\"\n          }\n      }\n  }\n}"
     ]
   }
 }

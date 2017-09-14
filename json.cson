@@ -1,10 +1,24 @@
-  # cson converts to json but lets us write nicer snippets
+    # cson converts to json but lets us write nicer snippets
   # main issue with snippets is here https://github.com/Microsoft/vscode/issues/15140
   # doco for cson is here https://github.com/bevry/cson
   # to compile the snippets
   #     install cson
   #     execute the following
   #         cson2json csharp.cson>csharp.json & cson2json json.cson>json.json
+
+
+redisconnectoinstring:
+	prefix: 'redis-connection-string'
+	body: ['''
+"MyRedis":"redis://[password]@[redisinstancename].redis.cache.windows.net:6380?ssl=true&db=1"
+''']
+
+
+redisconnectoinstring:
+	prefix: 'azure-web-job-storage-settings'
+	body: ['''
+"AzureWebJobsStorage": "UseDevelopmentStorage=true"
+''']
 
 
 azsp001a:
@@ -71,3 +85,23 @@ azsp001b:
 
 	''']
 	
+
+azsp002a:
+	prefix: 'azsp-fun-2a-syncCustomers-projectjson'
+	body: ['''
+  {
+    "frameworks": {
+        "net46": {
+            "dependencies": {
+                "Dapper": "1.50.2",
+                "System.Data.SqlClient": "4.1.0",
+                "Microsoft.WindowsAzure.ConfigurationManager": "3.2.1",
+                "ServiceStack.Common": "4.5.12",
+                "ServiceStack.Interfaces": "4.5.12",
+                "ServiceStack.Redis": "4.5.12",
+                "ServiceStack.Text": "4.5.12"
+            }
+        }
+    }
+}
+  ''']
